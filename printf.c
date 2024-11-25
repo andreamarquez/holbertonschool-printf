@@ -47,7 +47,6 @@ int _printf(const char * const format, ...)
 		format_index++;
 	}
 
-
 	flush_buffer(buffer, &buffer_index);
 	va_end(args);
 	return (printed_chars);

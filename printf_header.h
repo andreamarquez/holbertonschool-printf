@@ -15,7 +15,6 @@ int _printf(const char *format, ...);
 #ifndef STRUCTURES_PRINT_H
 #define STRUCTURES_PRINT_H
 
-
 /**
  * struct handler - Structure to map format specifiers to their corresponding
  * print functions.
