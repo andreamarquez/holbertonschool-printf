@@ -16,19 +16,39 @@
  *
  * Return: The number of characters printed for the specifier.
  */
-int handle_format(const char *format, handler_t *types, va_list *args,
-		char *buffer, int *p_buffer_index)
+int handle_format(
+	const char *format,
+	handler_t *types,
+	va_list *args,
+	char *buffer,
+	int *p_buffer_index)
 {
 	int i, printed_chars = 0;
+	/*
+	 * Flag to check later if the format specifier is unknown
+	 * set to one by default, if the format is valid, it is
+	 * set to 0
+	 */
+	int is_unknown = 1;
 
 	for (i = 0; types[i].format_specifier != '\0'; i++)
 	{
 		if (*format == types[i].format_specifier)
 		{
+			is_unknown = 0;
 			printed_chars = types[i].print_func(args, buffer, p_buffer_index);
 			break;
 		}
 	}
+
+	/**
+	 * If the `is_unknown` condition is true, it means that the format
+	 * specifier is not supported/unknown so it has to be printed as
+	 * a regular char.
+	 */
+	if (is_unknown)
+		printed_chars = percent_unknown(*format, buffer, p_buffer_index);
+
 	return (printed_chars);
 }
 
