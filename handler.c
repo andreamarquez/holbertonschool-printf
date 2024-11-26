@@ -112,3 +112,20 @@ int percent_c(va_list *args, char *buffer, int *p_buffer_index)
 	return (1); /* One character was added to the buffer */
 }
 
+
+/**
+ * percent_unknown - Handles unknown format specifiers in printf.
+ * @unknown_format: The unknown format specifier character.
+ * @buffer: The buffer to which the character should be appended.
+ * @p_buffer_index: Pointer to the current index in the buffer.
+ *
+ * This function appends the unknown format specifier to the buffer
+ * and increments the buffer index.
+ *
+ * Return: Always returns 1, indicating one character was added to the buffer.
+ */
+int percent_unknown(char unknown_format, char *buffer, int *p_buffer_index)
+{
+	append_to_buffer(buffer, p_buffer_index, unknown_format);
+	return (1); /* One character was added to the buffer */
+}
