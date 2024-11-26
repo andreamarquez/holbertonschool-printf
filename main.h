@@ -29,7 +29,7 @@ void init_buffer(int *p_buffer_index);
 void append_to_buffer(char *buffer, int *p_buffer_index, char c);
 void flush_buffer(char *buffer, int *p_buffer_index);
 int _printf(const char *format, ...);
-int handle_formant(const char *format, handler_t *types, va_list *args,
+int handle_format(const char *format, handler_t *types, va_list *args,
 		char *buffer, int *p_buffer_index);
 
 
