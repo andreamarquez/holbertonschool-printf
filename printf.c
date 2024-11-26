@@ -18,9 +18,14 @@ int _printf(const char * const format, ...)
 	int buffer_index = 0;
 	int printed_chars = 0;
 	int format_index = 0;
+	int i;
 
 	handler_t types[] = {
 		{'c', percent_c},
+		{'d', percent_di},
+		{'i', percent_di},
+		{'s', percent_s},
+		{'%', percent_percent},
 		{'\0', NULL}
 	};
 
@@ -37,26 +42,27 @@ int _printf(const char * const format, ...)
 		if (format[format_index] == '%')
 		{
 			format_index++;
-			/* use the struct instead with a while or something like in print_all */
-			if (format[format_index] == types[0].format_specifier)
+			for (i = 0; types[i].format_specifier != '\0'; i++)
 			{
-				printed_chars = printed_chars + types[0].print_func(&args, buffer, &buffer_index);
+				if (format[format_index] == types[i].format_specifier)
+				{
+					printed_chars += types[i].print_func(&args, buffer, &buffer_index);
+					break;
+				}
 			}
 		}
-	
+		else
+		{
+			append_to_buffer(buffer, &buffer_index, format[format_index]);
+			printed_chars++;
+		}
+
 		format_index++;
 	}
 
 	flush_buffer(buffer, &buffer_index);
 	va_end(args);
 	return (printed_chars);
-}
-
-int percent_c(va_list *args, char *buffer, int *p_buffer_index)
-{
-    char c = va_arg(*args, int);
-    append_to_buffer(buffer, p_buffer_index, c);
-    return 1; /* One character was added to the buffer */
 }
 
 void init_buffer(int *p_buffer_index)
@@ -72,9 +78,9 @@ void flush_buffer(char *buffer, int *p_buffer_index) {
 }
 
 void append_to_buffer(char *buffer, int *p_buffer_index, char c) {
-    if (*p_buffer_index >= BUFFER_SIZE) {
-       flush_buffer(buffer, p_buffer_index);
-    }
-    buffer[*p_buffer_index] = c;
+	if (*p_buffer_index >= BUFFER_SIZE) {
+		flush_buffer(buffer, p_buffer_index);
+	}
+	buffer[*p_buffer_index] = c;
 	(*p_buffer_index)++;
 }
