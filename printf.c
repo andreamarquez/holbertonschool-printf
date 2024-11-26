@@ -6,20 +6,45 @@
 #define BUFFER_SIZE 512
 
 /**
- * _printf - Produces output according to a format and send it to 
- * the console.
- * @format: A character string that contains 0 or more directives such as
- * (%c, %s, %d, %i, %%).
- * Return: The quantity of characters printed except the null terminator.
+ * handle_format - Processes a format specifier
+ * and calls the appropriate handler.
+ * @format: The format string.
+ * @types: Array of handler_t structures mapping specifiers to functions.
+ * @args: Pointer to the list of arguments.
+ * @buffer: Pointer to the output buffer.
+ * @p_buffer_index: Pointer to the index of the current position in the buffer.
+ *
+ * Return: The number of characters printed for the specifier.
+ */
+int handle_format(const char *format, handler_t *types, va_list *args,
+		char *buffer, int *p_buffer_index)
+{
+	int i, printed_chars = 0;
+
+	for (i = 0; types[i].format_specifier != '\0'; i++)
+	{
+		if (*format == types[i].format_specifier)
+		{
+			printed_chars = types[i].print_func(args, buffer, p_buffer_index);
+			break;
+		}
+	}
+	return (printed_chars);
+}
+
+/**
+ * _printf - Custom implementation of printf.
+ * @format: The format string containing the text and format specifiers.
+ *
+ * Description: This function processes a format string and calls the
+ * appropriate handlers for each format specifier.
+ *
+ * Return: The total number of characters printed.
  */
 int _printf(const char * const format, ...)
 {
 	char buffer[BUFFER_SIZE];
-	int buffer_index = 0;
-	int printed_chars = 0;
-	int format_index = 0;
-	int i;
-
+	int buffer_index = 0, printed_chars = 0, format_index = 0;
 	handler_t types[] = {
 		{'c', percent_c},
 		{'d', percent_di},
@@ -28,35 +53,24 @@ int _printf(const char * const format, ...)
 		{'%', percent_percent},
 		{'\0', NULL}
 	};
-
-	/* Declare the va_list of arguments and initialize it with va_start */
 	va_list args;
+
 	va_start(args, format);
 	init_buffer(&buffer_index);
 
-
-	/* While loop to iterate the format string and it continues until the */
-	/* null terminator is found*/
 	while (format != NULL && format[format_index] != '\0')
 	{
 		if (format[format_index] == '%')
 		{
 			format_index++;
-			for (i = 0; types[i].format_specifier != '\0'; i++)
-			{
-				if (format[format_index] == types[i].format_specifier)
-				{
-					printed_chars += types[i].print_func(&args, buffer, &buffer_index);
-					break;
-				}
-			}
+			printed_chars += handle_format(&format[format_index], types,
+					&args, buffer, &buffer_index);
 		}
 		else
 		{
 			append_to_buffer(buffer, &buffer_index, format[format_index]);
 			printed_chars++;
 		}
-
 		format_index++;
 	}
 
@@ -65,22 +79,48 @@ int _printf(const char * const format, ...)
 	return (printed_chars);
 }
 
+
+/**
+ * init_buffer - Initializes the buffer index to start at the beginning.
+ * @p_buffer_index: Pointer to the index of the buffer.
+ *
+ * Description: This function sets the buffer index to zero, indicating
+ * that the buffer is empty and ready to be written to.
+ */
 void init_buffer(int *p_buffer_index)
 {
 	*p_buffer_index = 0;
 }
 
-void flush_buffer(char *buffer, int *p_buffer_index) {
-	if (*p_buffer_index > 0) {
-		write(1, buffer, *p_buffer_index);
-		*p_buffer_index = 0;
-	}
+/**
+ * flush_buffer - Outputs the contents of the buffer and resets it.
+ * @buffer: The buffer containing the data to be flushed.
+ * @p_buffer_index: Pointer to the index of the current position in the buffer.
+ *
+ * Description: This function sends the contents of the buffer to the standard
+ * output and resets the buffer index to zero.
+ */
+void flush_buffer(char *buffer, int *p_buffer_index)
+{
+	write(1, buffer, *p_buffer_index); /* Writes buffer to standard output */
+	*p_buffer_index = 0;
 }
 
-void append_to_buffer(char *buffer, int *p_buffer_index, char c) {
-	if (*p_buffer_index >= BUFFER_SIZE) {
+/**
+ * append_to_buffer - Appends a character to the buffer.
+ * @buffer: The buffer to append the character to.
+ * @p_buffer_index: Pointer to the index of the current position in the buffer.
+ * @c: The character to be appended to the buffer.
+ *
+ * Description: This function adds a single character to the buffer and
+ * increments the buffer index. If the buffer is full, it flushes the buffer
+ * before adding the new character.
+ */
+void append_to_buffer(char *buffer, int *p_buffer_index, char c)
+{
+	if (*p_buffer_index >= BUFFER_SIZE) /* Assuming BUFFER_SIZE is defined */
+	{
 		flush_buffer(buffer, p_buffer_index);
 	}
-	buffer[*p_buffer_index] = c;
-	(*p_buffer_index)++;
+	buffer[(*p_buffer_index)++] = c;
 }
