@@ -101,7 +101,6 @@ int _printf(const char * const format, ...)
 	return (printed_chars);
 }
 
-
 /**
  * init_buffer - Initializes the buffer index to start at the beginning.
  * @p_buffer_index: Pointer to the index of the buffer.
