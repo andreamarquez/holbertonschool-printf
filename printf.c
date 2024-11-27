@@ -82,21 +82,21 @@ int _printf(const char * const format, ...)
 			if (format[format_index] == '\0')
 			{
 				return (-1);
-				printed_chars += handle_format(&format[format_index], types,
-						&args, buffer, &buffer_index);
 			}
-			else
-			{
-				append_to_buffer(buffer, &buffer_index, format[format_index]);
-				printed_chars++;
-			}
-			format_index++;
+			printed_chars += handle_format(&format[format_index], types,
+					&args, buffer, &buffer_index);
 		}
-
-		flush_buffer(buffer, &buffer_index);
-		va_end(args);
-		return (printed_chars);
+		else
+		{
+			append_to_buffer(buffer, &buffer_index, format[format_index]);
+			printed_chars++;
+		}
+		format_index++;
 	}
+
+	flush_buffer(buffer, &buffer_index);
+	va_end(args);
+	return (printed_chars);
 }
 
 /**
