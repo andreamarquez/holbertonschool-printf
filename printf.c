@@ -71,6 +71,7 @@ int _printf(const char * const format, ...)
 
 	if (format == NULL)
 		return (-1);
+
 	va_start(args, format);
 	init_buffer(&buffer_index);
 
@@ -79,6 +80,10 @@ int _printf(const char * const format, ...)
 		if (format[format_index] == '%')
 		{
 			format_index++;
+			if (format[format_index] == '\0')
+			{
+				return (printed_chars);
+			}
 			printed_chars += handle_format(&format[format_index], types,
 					&args, buffer, &buffer_index);
 		}
@@ -124,19 +129,25 @@ void flush_buffer(char *buffer, int *p_buffer_index)
 /**
  * append_to_buffer - Appends a character to the buffer.
  * @buffer: The buffer to append the character to.
- * @buffer_index: Pointer to the index of the current position in the buffer.
+ * @p_buffer_index: Pointer to the index of the current position in the buffer.
  * @c: The character to be appended to the buffer.
  *
  * Description: This function adds a single character to the buffer and
  * increments the buffer index. If the buffer is full, it flushes the buffer
  * before adding the new character.
  */
-void append_to_buffer(char *buffer, int *buffer_index, char c)
+void append_to_buffer(char *buffer, int *p_buffer_index, char c)
 {
-	buffer[*buffer_index] = c;
-	(*buffer_index)++;
-	if (*buffer_index == 1024)
+	if (*p_buffer_index < 1024)
 	{
-		flush_buffer(buffer, buffer_index);
+		buffer[*p_buffer_index] = c;
+		(*p_buffer_index)++;
+	}
+	else
+	{
+		write(1, buffer, *p_buffer_index); /* Writes buffer to standard output */
+		*p_buffer_index = 0;
+		buffer[*p_buffer_index] = c;
+		(*p_buffer_index)++;
 	}
 }
