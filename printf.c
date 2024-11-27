@@ -69,7 +69,7 @@ int _printf(const char * const format, ...)
 	};
 	va_list args;
 
-	if (format == NULL) /* Handle NULL format */
+	if (format == NULL)
 		return (-1);
 	va_start(args, format);
 	init_buffer(&buffer_index);
@@ -82,22 +82,22 @@ int _printf(const char * const format, ...)
 			if (format[format_index] == '\0')
 			{
 				return (-1);
-				printed_chars += handle_format(&format[format_index],
-						types, &args, buffer, &buffer_index);
+				printed_chars += handle_format(&format[format_index], types,
+						&args, buffer, &buffer_index);
 			}
+			else
+			{
+				append_to_buffer(buffer, &buffer_index, format[format_index]);
+				printed_chars++;
+			}
+			format_index++;
 		}
-		else
-		{
-			append_to_buffer(buffer, &buffer_index, format[format_index]);
-			printed_chars++;
-		}
-		format_index++;
-	}
-	flush_buffer(buffer, &buffer_index);
-	va_end(args);
-	return (printed_chars);
-}
 
+		flush_buffer(buffer, &buffer_index);
+		va_end(args);
+		return (printed_chars);
+	}
+}
 
 /**
  * init_buffer - Initializes the buffer index to start at the beginning.
