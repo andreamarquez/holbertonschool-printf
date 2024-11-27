@@ -73,10 +73,13 @@ int _printf(const char * const format, ...)
 	};
 	va_list args;
 
+	if (format == NULL) /* Handle NULL format */
+		return (-1);
+
 	va_start(args, format);
 	init_buffer(&buffer_index);
 
-	while (format != NULL && format[format_index] != '\0')
+	while (format[format_index] != '\0')
 	{
 		if (format[format_index] == '%')
 		{
