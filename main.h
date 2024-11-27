@@ -25,7 +25,6 @@ int percent_percent(va_list *args, char *buffer, int *p_buffer_index);
 int percent_di(va_list *args, char *buffer, int *p_buffer_index);
 int percent_c(va_list *args, char *buffer, int *p_buffer_index);
 int percent_unknown(char unknown_format, char *buffer, int *p_buffer_index);
-void init_buffer(int *p_buffer_index);
 void append_to_buffer(char *buffer, int *p_buffer_index, char c);
 void flush_buffer(char *buffer, int *p_buffer_index);
 int _printf(const char *format, ...);

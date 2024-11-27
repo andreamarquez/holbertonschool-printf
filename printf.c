@@ -73,7 +73,6 @@ int _printf(const char * const format, ...)
 		return (-1);
 
 	va_start(args, format);
-	init_buffer(&buffer_index);
 
 	while (format[format_index] != '\0')
 	{
@@ -103,18 +102,6 @@ int _printf(const char * const format, ...)
 }
 
 /**
- * init_buffer - Initializes the buffer index to start at the beginning.
- * @p_buffer_index: Pointer to the index of the buffer.
- *
- * Description: This function sets the buffer index to zero, indicating
- * that the buffer is empty and ready to be written to.
- */
-void init_buffer(int *p_buffer_index)
-{
-	*p_buffer_index = 0;
-}
-
-/**
  * flush_buffer - Outputs the contents of the buffer and resets it.
  * @buffer: The buffer containing the data to be flushed.
  * @p_buffer_index: Pointer to the index of the current position in the buffer.
@@ -124,8 +111,11 @@ void init_buffer(int *p_buffer_index)
  */
 void flush_buffer(char *buffer, int *p_buffer_index)
 {
-	write(1, buffer, *p_buffer_index); /* Writes buffer to standard output */
-	*p_buffer_index = 0;
+	if (*p_buffer_index > 0)
+	{
+		write(1, buffer, *p_buffer_index);
+		*p_buffer_index = 0;
+	}
 }
 
 /**
