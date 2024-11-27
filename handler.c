@@ -111,10 +111,7 @@ int percent_c(va_list *args, char *buffer, int *p_buffer_index)
 {
 	char c = va_arg(*args, int);
 
-	if (c != '\0')
-	{
-		append_to_buffer(buffer, p_buffer_index, c);
-	}
+	append_to_buffer(buffer, p_buffer_index, c);
 
 	return (1); /* One character was added to the buffer */
 }
