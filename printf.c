@@ -81,9 +81,8 @@ int _printf(const char * const format, ...)
 			format_index++;
 			if (format[format_index] == '\0')
 			{
-				append_to_buffer(buffer, &buffer_index, format[format_index]);
-				flush_buffer(buffer, &buffer_index);
-				return (printed_chars);
+				va_end(args);
+				return (-1);
 			}
 			printed_chars += handle_format(&format[format_index], types,
 					&args, buffer, &buffer_index);
