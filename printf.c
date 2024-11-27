@@ -15,11 +15,11 @@
  * Return: The number of characters printed for the specifier.
  */
 int handle_format(
-	const char *format,
-	handler_t *types,
-	va_list *args,
-	char *buffer,
-	int *p_buffer_index)
+		const char *format,
+		handler_t *types,
+		va_list *args,
+		char *buffer,
+		int *p_buffer_index)
 {
 	int i, printed_chars = 0;
 	/*
@@ -127,18 +127,19 @@ void flush_buffer(char *buffer, int *p_buffer_index)
 /**
  * append_to_buffer - Appends a character to the buffer.
  * @buffer: The buffer to append the character to.
- * @p_buffer_index: Pointer to the index of the current position in the buffer.
+ * @buffer_index: Pointer to the index of the current position in the buffer.
  * @c: The character to be appended to the buffer.
  *
  * Description: This function adds a single character to the buffer and
  * increments the buffer index. If the buffer is full, it flushes the buffer
  * before adding the new character.
  */
-void append_to_buffer(char *buffer, int *p_buffer_index, char c)
+void append_to_buffer(char *buffer, int *buffer_index, char c)
 {
-	if (*p_buffer_index >= 1024) /* Assuming BUFFER_SIZE is 1024 */
+	buffer[*buffer_index] = c;
+	(*buffer_index)++;
+	if (*buffer_index == 1024)
 	{
-		flush_buffer(buffer, p_buffer_index);
+		flush_buffer(buffer, buffer_index);
 	}
-	buffer[(*p_buffer_index)++] = c;
 }
