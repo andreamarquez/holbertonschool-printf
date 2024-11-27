@@ -64,18 +64,13 @@ int _printf(const char * const format, ...)
 	char buffer[1024];
 	int buffer_index = 0, printed_chars = 0, format_index = 0;
 	handler_t types[] = {
-		{'c', percent_c},
-		{'d', percent_di},
-		{'i', percent_di},
-		{'s', percent_s},
-		{'%', percent_percent},
-		{'\0', NULL}
+		{'c', percent_c}, {'d', percent_di}, {'i', percent_di}, {'s', percent_s},
+		{'%', percent_percent}, {'\0', NULL}
 	};
 	va_list args;
 
 	if (format == NULL) /* Handle NULL format */
 		return (-1);
-
 	va_start(args, format);
 	init_buffer(&buffer_index);
 
@@ -84,6 +79,12 @@ int _printf(const char * const format, ...)
 		if (format[format_index] == '%')
 		{
 			format_index++;
+			if (format[format_index] == '\0')
+			{
+				flush_buffer(buffer, &buffer_index);
+				va_end(args);
+				return (-1);
+			}
 			printed_chars += handle_format(&format[format_index], types,
 					&args, buffer, &buffer_index);
 		}
