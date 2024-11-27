@@ -18,18 +18,19 @@ int percent_di(va_list *args, char *buffer, int *p_buffer_index)
 {
 	int num = va_arg(*args, int);
 	char str[12]; /* Enough to hold the largest int (-2147483648) */
-	int i = 0;
+	int i = 0, char_count = 0;
 
 	if (num < 0)
 	{
 		append_to_buffer(buffer, p_buffer_index, '-');
+		char_count++; /* Count the '-' */
 		num = -num;
 	}
 
 	if (num == 0)
 	{
 		append_to_buffer(buffer, p_buffer_index, '0');
-		return (1);
+		return (1); /* Only one character added */
 	}
 
 	while (num > 0)
@@ -38,12 +39,14 @@ int percent_di(va_list *args, char *buffer, int *p_buffer_index)
 		num /= 10;
 	}
 
+	char_count += i; /* Add the number of digits */
+
 	while (i > 0)
 	{
 		append_to_buffer(buffer, p_buffer_index, str[--i]);
 	}
 
-	return (i); /* Total characters added */
+	return (char_count); /* Return the total characters added */
 }
 
 /**
