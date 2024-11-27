@@ -135,7 +135,10 @@ int percent_c(va_list *args, char *buffer, int *p_buffer_index)
  */
 int percent_unknown(char unknown_format, char *buffer, int *p_buffer_index)
 {
+	/* Append the '%' character */
+	append_to_buffer(buffer, p_buffer_index, '%');
+
 	/* Append the unknown format specifier */
 	append_to_buffer(buffer, p_buffer_index, unknown_format);
-	return (1);
+	return (2);
 }
