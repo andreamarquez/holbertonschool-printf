@@ -1,42 +1,108 @@
-# holbertonschool-printf
+# Holberton School - Custom `_printf` Implementation
 
-SYNOPSIS:
+Welcome to the custom implementation of the `_printf` function! This project is a simplified version of the standard C library `printf` function, focusing on foundational concepts and formatted output functionality.
 
-Welcome to the custom implementation of the _printf function! This project is a simplified version of the standard C library printf function, designed to handle formatted output according to specific format specifiers.
+## Learning Objectives
+Through this project, you will learn:
+- The basics of formatted output handling in C.
+- Efficient memory usage via buffers.
+- Modular programming with separate handlers for specifiers.
+- Debugging and testing a custom implementation of a standard library function.
 
+---
 
-Handler.c file:
+## Features
+### Key Characteristics
+- **Internal Buffer**: Utilizes a fixed 1024-byte buffer to optimize output operations.
+- **Error Handling**: Returns `-1` if the format string is `NULL`.
+- **Lightweight Implementation**: Focuses on simple structures and minimal memory footprint.
 
-this is a file wich contains a function for each specifier.
-the supported format specifiers by _printf are:
-    
-    %c              Prints a single character
-    %s              Prints a string
-    %d, %i          Prints an integer in decimal notation. Positives and negatives.
-    %%              Prints a literal % character
-    
-        Unsupported format specifiers are printed as %<unknown>
+### Limitations
+- **No Advanced Formatting**: Does not support field width, precision, or flags like `+`, `-`, or `0`.
+- **Limited Specifiers**: Only supports a few basic format specifiers.
+- **Fixed Buffer Size**: Outputs exceeding 1024 bytes are flushed incrementally.
 
-Main.h file:
-This file is our own library which contains the prototypes of each functions 
-and the structure of handler.
+---
 
+## Supported Format Specifiers
+| **Specifier** | **Functionality**                                  |
+|---------------|----------------------------------------------------|
+| `%c`          | Prints a single character.                         |
+| `%s`          | Prints a string.                                   |
+| `%d`, `%i`    | Prints an integer in decimal notation (signed).    |
+| `%%`          | Prints a literal `%` character.                    |
 
-Features and Limitations:
+Unsupported specifiers are printed as `%<unknown>`.
 
-    Internal Buffer: Uses a fixed 1024-byte buffer to optimize output operations.
-    Error Handling: Returns -1 if the format string is NULL.
-    Minimal Memory Footprint: Uses simple structures and lightweight processing.
-    
-    No Advanced Formatting: Does not support field width, precision, or flags like +, -, or 0.
-    Limited Specifiers: Only the specifiers listed above are implemented.
-    Fixed Buffer Size: The buffer is limited to 1024 bytes, and outputs exceeding
-    this size are flushed incrementally.
+---
 
-Help:
+## File Structure
 
-    If you need more details you can acces the man_3_printf file or contact the authors.
-    -9815@holbertonstudents.com
-    -9948@holbertonstudents.com
+### Core Files
+1. **`_printf.c`**  
+   Contains the main implementation of the `_printf` function:
+   int _printf(const char * const format, ...);
 
+2. **`handler.c`**  
+   Validates the format of arguments passed to `_printf`.
 
+3. **Specifier Handlers**  
+   Individual functions for handling supported specifiers.
+
+4. **Buffer Management**  
+   - `void flush_buffer(char *buffer, int *p_buffer_index);`  
+     Flushes the buffer content to standard output.
+   - `void append_to_buffer(char *buffer, int *p_buffer_index, char c);`  
+     Appends characters to the buffer.
+
+5. **`main.h`**  
+   The header file containing prototypes and shared structures.
+
+### Compilation
+To compile the code, use the following flags:
+gcc -Wall -Werror -Wextra -pedantic -std=gnu89 -Wno-format *.c
+
+---
+
+## How to Use
+
+1. Clone the repository:
+   git clone https://github.com/andreamarquez/holbertonschool-printf.git
+
+2. Navigate to the project directory:
+   cd holbertonschool-printf
+
+3. Compile the project using the provided `gcc` flags:
+   gcc -Wall -Werror -Wextra -pedantic -std=gnu89 -Wno-format *.c
+
+4. Include `_printf` in your code:
+   #include "main.h"
+
+   int main(void)
+   {
+       _printf("Hello, %s!\n", "world");
+       return 0;
+   }
+
+5. Execute the compiled program:
+   ./a.out
+
+---
+
+## Help and Documentation
+
+For more details, refer to the provided `man_3_printf` file. If additional help is required, contact the authors at:
+- 9815@holbertonstudents.com
+- 9948@holbertonstudents.com
+
+---
+
+### Authors
+This project was created and maintained by:
+- **Student 9815 / Raphael DOTT**
+- **Student 9948 / Andrea MARQUEZ**
+
+---
+
+### License
+This project is open-source and available for educational purposes.
