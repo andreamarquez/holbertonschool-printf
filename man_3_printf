@@ -1,0 +1,83 @@
+_PRINTF(1)                      User Commands                     _PRINTF(1)
+
+NAME
+       _printf - custom implementation of the printf function.
+
+SYNOPSIS
+       #include "main.h"
+
+       int _printf(const char *format, ...);
+
+DESCRIPTION
+       _printf  is a custom implementation of the standard C library function
+       printf. It produces output according to a format string, interpreting
+       format specifiers to print different types of arguments.
+
+       The format string is composed of regular characters (copied as-is to
+       the output) and format specifiers (preceded by `%`) that determine how
+       subsequent arguments are formatted.
+
+FORMAT SPECIFIERS
+       The following format specifiers are supported:
+
+       %c     Prints a single character.
+
+       %s     Prints a null-terminated string. If the string is NULL,
+              "(null)" is printed instead.
+
+       %d, %i Prints an integer in decimal notation. Can handle INT MIN
+
+       %%     Prints a literal `%` character.
+
+RETURN VALUE
+       On success, _printf returns the total number of characters printed.
+       If an error occurs or if the format string is NULL, it returns -1.
+
+IMPLEMENTATION DETAILS
+       - The function uses a 1024-byte internal buffer to handle output.
+       - Each supported format specifier is associated with a handler
+         function defined in the source code (e.g., percent_c, percent_s).
+       - Unsupported format specifiers are printed as-is with the leading `%`.
+
+LIMITATIONS
+       - Does not handle advanced features like field width, precision, or
+         flags (e.g., `+`, `-`, `0`).
+       - Limited to the supported specifiers listed above.
+       - Buffer size is fixed at 1024 bytes, and outputs exceeding this size
+         are flushed incrementally.
+
+USAGE EXAMPLES
+       Example 1: Printing a string and an integer.
+           _printf("Hello, %s! You are %d years old.\n", "Alice", 25);
+
+           Output:
+           Hello, Alice! You are 25 years old.
+
+       Example 2: Printing a literal `%` character.
+           _printf("100%% complete.\n");
+
+           Output:
+           100% complete.
+
+FILES
+       - main.h: Header file containing function prototypes and the handler
+         structure.
+       - printf.c: Contains the _printf function and buffer management logic.
+       - handler.c: Defines the handler functions for supported format
+         specifiers.
+
+AUTHOR
+       Written by Andrea Marquez & Raphael Dott
+       Holberton School
+
+REPORTING BUGS
+	Report any bugs or improvement to the authors: 
+	-9815@holbertonstudents.com
+	-9948@holbertonstudents.com
+SEE ALSO
+	man printf 
+
+	 Full documentation <https://www.gnu.org/software/coreutils/printf>
+         or available locally via: info '(coreutils) printf invocation'
+			
+						November 2024				_PRINTf(1)       
