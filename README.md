@@ -127,6 +127,7 @@ For more details, refer to the provided `man_3_printf` file. If additional help 
 ### Flowchart
 In this README file, only the diagrams for the printf and handle_format functions are specified. For more details, 
 refer to the provided `flow-charts` directory.
+
 printf
 
 ![printf flow chart](flow-charts/printf.svg)
