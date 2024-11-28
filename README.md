@@ -89,11 +89,52 @@ gcc -Wall -Werror -Wextra -pedantic -std=gnu89 -Wno-format *.c
 
 ---
 
+## Testing
+
+To test the _printf function, you can create a main.c file in the project directory. It must serve as the entry point of a C program and have a '.c' extension. Below is a template for this file:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "main.h"
+/**
+ * main - Entry point
+ *
+ * Return: 0 on success, error code otherwise
+ */
+int main(void)
+{
+	int len, len2;
+	len = _printf("%");
+	len2 = printf("%");
+	fflush(stdout);
+	if (len != len2)
+	{
+		printf("Lengths differ.\n");
+		fflush(stdout);
+		return (1);
+	}
+	return (0);
+}
+```
+
 ## Help and Documentation
 
 For more details, refer to the provided `man_3_printf` file. If additional help is required, contact the authors at:
 - 9815@holbertonstudents.com
 - 9948@holbertonstudents.com
+
+### Flowchart
+In this README file, only the diagrams for the printf and handle_format functions are specified. For more details, 
+refer to the provided `flow-charts` directory.
+printf
+
+![printf flow chart](flow-charts/printf.svg)
+
+handle_format
+
+![printf flow chart](flow-charts/handle_format.svg)
+
 
 ---
 
